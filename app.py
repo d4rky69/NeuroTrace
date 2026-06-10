@@ -81,22 +81,6 @@ if 'detected_age' not in st.session_state:
 if 'detected_emotion' not in st.session_state:
     st.session_state.detected_emotion = "Unknown"
 
-# --- Sidebar ---
-with st.sidebar:
-    st.markdown("<h2 style='text-align: center; color: #00D9C0; text-shadow: 0 0 10px rgba(0,217,192,0.5);'>🧠 NeuroTrace</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 14px; color: #94A3B8;'>AI Nexus Hackathon 2026</p>", unsafe_allow_html=True)
-    st.divider()
-    
-    st.markdown("### Patient Telemetry")
-    patient_id = st.text_input("Patient ID", "NT-1042-X")
-    
-    st.metric("Estimated Patient Age", value=f"{st.session_state.detected_age} yrs" if st.session_state.detected_age > 0 else "Awaiting Scan...")
-    st.metric("Base Emotion State", value=st.session_state.detected_emotion)
-    
-    st.divider()
-    st.success("🟢 Edge-Compute Node Active")
-    st.caption("Secure Stream initialized.")
-
 # --- Main Dashboard ---
 st.title("Diagnostic AI Dashboard")
 st.markdown("Multimodal Fusion for **Non-Invasive Cognitive Screening**")
@@ -121,25 +105,18 @@ with tab1:
             
             if video_file:
                 st.video(video_file)
-                # Single button controls the whole pipeline
                 if st.button("🔍 Run Full Multimodal Pipeline", key="vid_pipe"):
                     with st.spinner("Extracting timeline frames and running DeepFace Neural Network..."):
                         try:
-                            # Save video temporarily to process with OpenCV
                             tfile = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") 
                             tfile.write(video_file.read())
                             cap = cv2.VideoCapture(tfile.name)
                             
-                            ages = []
-                            emotions = []
-                            
+                            ages, emotions = [], []
                             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
                             
-                            # Ensure the video isn't corrupted
                             if total_frames > 10:
-                                # Grab 3 frames across the video to average the data
                                 frame_steps = [int(total_frames*0.2), int(total_frames*0.5), int(total_frames*0.8)]
-                                
                                 for step in frame_steps:
                                     cap.set(cv2.CAP_PROP_POS_FRAMES, step)
                                     ret, frame = cap.read()
@@ -149,7 +126,6 @@ with tab1:
                                         emotions.append(analysis[0]['dominant_emotion'])
                                 
                                 if ages:
-                                    # Save to Session State
                                     st.session_state.detected_age = int(sum(ages) / len(ages))
                                     st.session_state.detected_emotion = max(set(emotions), key=emotions.count).capitalize()
                                     st.session_state['analysis_run'] = True
@@ -169,7 +145,6 @@ with tab1:
             cam_image = st.camera_input("Initialize Camera")
             
             if cam_image:
-                # Single button controls the whole pipeline
                 if st.button("🔍 Run Full Multimodal Pipeline", key="snap_pipe"):
                     with st.spinner("Extracting facial mesh & emotion biometrics..."):
                         try:
@@ -179,7 +154,6 @@ with tab1:
                             
                             analysis = DeepFace.analyze(img_path=img_bgr, actions=['age', 'emotion'], enforce_detection=False)
                             
-                            # Save to Session State
                             st.session_state.detected_age = analysis[0]['age']
                             st.session_state.detected_emotion = analysis[0]['dominant_emotion'].capitalize()
                             st.session_state['analysis_run'] = True
@@ -266,3 +240,19 @@ with tab2:
         st.error("**Clinical Recommendation:** Minor semantic deficits detected during narrative recall. Recommend scheduling a formal follow-up assessment in 3 months. No immediate intervention required.")
     else:
         st.info("Awaiting multimodal payload. Please process a video or snapshot in Step 1.")
+
+# --- Sidebar (Moved to the bottom for perfect state synchronization) ---
+with st.sidebar:
+    st.markdown("<h2 style='text-align: center; color: #00D9C0; text-shadow: 0 0 10px rgba(0,217,192,0.5);'>🧠 NeuroTrace</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 14px; color: #94A3B8;'>AI Nexus Hackathon 2026</p>", unsafe_allow_html=True)
+    st.divider()
+    
+    st.markdown("### Patient Telemetry")
+    patient_id = st.text_input("Patient ID", "NT-1042-X")
+    
+    st.metric("Estimated Patient Age", value=f"{st.session_state.detected_age} yrs" if st.session_state.detected_age > 0 else "Awaiting Scan...")
+    st.metric("Base Emotion State", value=st.session_state.detected_emotion)
+    
+    st.divider()
+    st.success("🟢 Edge-Compute Node Active")
+    st.caption("Secure Stream initialized. Admin: Shreyas Sahoo")
