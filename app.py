@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import cv2
+import tempfile
 from PIL import Image
 from deepface import DeepFace
 
@@ -79,8 +80,6 @@ if 'detected_age' not in st.session_state:
     st.session_state.detected_age = 0
 if 'detected_emotion' not in st.session_state:
     st.session_state.detected_emotion = "Unknown"
-if 'recording_state' not in st.session_state:
-    st.session_state.recording_state = "idle" # States: idle, recording, finished
 
 # --- Sidebar ---
 with st.sidebar:
@@ -96,7 +95,7 @@ with st.sidebar:
     
     st.divider()
     st.success("🟢 Edge-Compute Node Active")
-    st.caption("Secure WebRTC Stream initialized.")
+    st.caption("Secure Stream initialized.")
 
 # --- Main Dashboard ---
 st.title("Diagnostic AI Dashboard")
@@ -105,7 +104,7 @@ st.markdown("Multimodal Fusion for **Non-Invasive Cognitive Screening**")
 tab1, tab2 = st.tabs(["📡 Real-Time Data Capture", "🧬 Multimodal Fusion Analysis"])
 
 with tab1:
-    st.markdown("<div class='glass-panel'><h3>Visual Stimulus & Biometric Capture</h3><p>Instruct the patient to describe the complex scene below. Ensure their face is clearly visible in the camera frame and their microphone is unmuted.</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='glass-panel'><h3>Visual Stimulus & Biometric Capture</h3><p>Instruct the patient to describe the complex scene below. Upload a video recording or use the live snapshot tool for biometric analysis.</p></div>", unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1])
     
@@ -114,68 +113,79 @@ with tab1:
                  caption="Stimulus 1A: Cognitive Activation Scene", use_column_width=True)
         
     with col2:
-        st.markdown("#### 📹 Live Multimodal Feed")
+        capture_mode = st.radio("Select Capture Protocol:", ["Upload Video Feed", "Live Snapshot"])
         
-        # Native Streamlit Camera Input acts as our viewfinder
-        cam_image = st.camera_input("Initialize Camera")
-        
-        if cam_image:
-            # STATE 1: Ready to Record
-            if st.session_state.recording_state == "idle":
-                if st.button("🔴 Start 5-Second Recording"):
-                    st.session_state.recording_state = "recording"
-                    st.rerun()
+        if capture_mode == "Upload Video Feed":
+            st.markdown("#### 📁 Upload Video Payload")
+            video_file = st.file_uploader("Upload .mp4 or .mov", type=['mp4', 'mov'])
             
-            # STATE 2: Actively Recording (Simulated via a timer)
-            elif st.session_state.recording_state == "recording":
-                st.warning("🔴 RECORDING IN PROGRESS - Please speak clearly.")
-                progress_bar = st.progress(0)
-                
-                # Simulate a 5-second recording capture
-                for i in range(100):
-                    time.sleep(0.05) 
-                    progress_bar.progress(i + 1)
-                    
-                st.session_state.recording_state = "finished"
-                st.rerun()
-                
-            # STATE 3: Finished Recording & AI Processing
-            elif st.session_state.recording_state == "finished":
-                st.success("✅ 5-Second Multimodal Audio/Video Sample Captured!")
-                
-                # Only run the DeepFace analysis once after recording finishes
-                if st.session_state.detected_age == 0: 
+            if video_file:
+                st.video(video_file)
+                if st.button("🔍 Extract & Analyze Video Frames"):
+                    with st.spinner("Extracting timeline frames and running DeepFace Neural Network..."):
+                        try:
+                            # Save video temporarily to process with OpenCV
+                            tfile = tempfile.NamedTemporaryFile(delete=False) 
+                            tfile.write(video_file.read())
+                            cap = cv2.VideoCapture(tfile.name)
+                            
+                            ages = []
+                            emotions = []
+                            
+                            # Grab 3 frames across the video to average the data
+                            total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                            frame_steps = [int(total_frames*0.2), int(total_frames*0.5), int(total_frames*0.8)]
+                            
+                            for step in frame_steps:
+                                cap.set(cv2.CAP_PROP_POS_FRAMES, step)
+                                ret, frame = cap.read()
+                                if ret:
+                                    # DeepFace AI Inference on each frame
+                                    analysis = DeepFace.analyze(img_path=frame, actions=['age', 'emotion'], enforce_detection=False)
+                                    ages.append(analysis[0]['age'])
+                                    emotions.append(analysis[0]['dominant_emotion'])
+                            
+                            if ages:
+                                # Average the data from the video
+                                st.session_state.detected_age = int(sum(ages) / len(ages))
+                                st.session_state.detected_emotion = max(set(emotions), key=emotions.count).capitalize()
+                                st.success(f"✅ Video Processed. Avg Age: {st.session_state.detected_age} | Dominant State: {st.session_state.detected_emotion}")
+                                st.markdown("<br>", unsafe_allow_html=True)
+                                if st.button("⚡ Execute Deep Fusion Analysis"):
+                                    st.session_state['analysis_run'] = True
+                                    st.session_state['already_loaded'] = False 
+                                    st.rerun()
+                            else:
+                                st.error("Failed to extract readable faces from video.")
+                        except Exception as e:
+                            st.error(f"Analysis failed: {e}")
+
+        else:
+            st.markdown("#### 📹 Live Snapshot")
+            cam_image = st.camera_input("Initialize Camera")
+            
+            if cam_image:
+                if st.button("🔍 Analyze Snapshot"):
                     with st.spinner("Extracting facial mesh & emotion biometrics..."):
                         try:
-                            # Convert Streamlit image for DeepFace
                             img = Image.open(cam_image)
                             img_array = np.array(img)
                             img_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
                             
-                            # DeepFace AI Inference
                             analysis = DeepFace.analyze(img_path=img_bgr, actions=['age', 'emotion'], enforce_detection=False)
                             
-                            # Extract data and update state
                             st.session_state.detected_age = analysis[0]['age']
                             st.session_state.detected_emotion = analysis[0]['dominant_emotion'].capitalize()
-                            st.rerun() # Refresh sidebar metrics
                             
+                            st.success(f"✅ Snapshot Processed. Age: {st.session_state.detected_age} | State: {st.session_state.detected_emotion}")
+                            st.markdown("<br>", unsafe_allow_html=True)
+                            
+                            if st.button("⚡ Execute Deep Fusion Analysis"):
+                                st.session_state['analysis_run'] = True
+                                st.session_state['already_loaded'] = False 
+                                st.rerun()
                         except Exception as e:
-                            st.error(f"Facial scan failed: {e}. Please ensure good lighting.")
-                
-                st.info(f"Biometric Lock: Age {st.session_state.detected_age} | State: {st.session_state.detected_emotion}")
-                st.markdown("<br>", unsafe_allow_html=True)
-                
-                if st.button("⚡ Execute Deep Fusion Analysis"):
-                    st.session_state['analysis_run'] = True
-                    st.session_state['already_loaded'] = False 
-                    
-        else:
-            st.info("Awaiting camera initialization to begin assessment.")
-            # Reset states if camera is closed
-            st.session_state.recording_state = "idle"
-            st.session_state.detected_age = 0
-            st.session_state.detected_emotion = "Unknown"
+                            st.error(f"Facial scan failed: {e}")
 
 with tab2:
     if st.session_state.get('analysis_run', False):
@@ -187,7 +197,7 @@ with tab2:
             f"Subject identified. Target Age Node: {st.session_state.detected_age}...",
             f"Baseline Emotion Context: {st.session_state.detected_emotion}",
             "Initializing FastAPI backend router...",
-            "Mounting 5-second A/V payload to Edge RAM...",
+            "Mounting multimodal payload to Edge RAM...",
             "Running OpenSMILE Acoustic Feature Extraction... [OK]",
             "Processing Audio -> Whisper ASR -> Llama-3 Semantic NLP... [OK]",
             "Mapping 468 facial landmarks via Google MediaPipe... [OK]",
@@ -252,4 +262,4 @@ with tab2:
             
         st.error("**Clinical Recommendation:** Minor semantic deficits detected during narrative recall. Recommend scheduling a formal follow-up assessment in 3 months. No immediate intervention required.")
     else:
-        st.info("Awaiting multimodal payload. Please complete the recording in Step 1.")
+        st.info("Awaiting multimodal payload. Please process a video or snapshot in Step 1.")
