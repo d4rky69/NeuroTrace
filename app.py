@@ -121,42 +121,46 @@ with tab1:
             
             if video_file:
                 st.video(video_file)
-                if st.button("🔍 Extract & Analyze Video Frames"):
+                # Single button controls the whole pipeline
+                if st.button("🔍 Run Full Multimodal Pipeline", key="vid_pipe"):
                     with st.spinner("Extracting timeline frames and running DeepFace Neural Network..."):
                         try:
                             # Save video temporarily to process with OpenCV
-                            tfile = tempfile.NamedTemporaryFile(delete=False) 
+                            tfile = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") 
                             tfile.write(video_file.read())
                             cap = cv2.VideoCapture(tfile.name)
                             
                             ages = []
                             emotions = []
                             
-                            # Grab 3 frames across the video to average the data
                             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-                            frame_steps = [int(total_frames*0.2), int(total_frames*0.5), int(total_frames*0.8)]
                             
-                            for step in frame_steps:
-                                cap.set(cv2.CAP_PROP_POS_FRAMES, step)
-                                ret, frame = cap.read()
-                                if ret:
-                                    # DeepFace AI Inference on each frame
-                                    analysis = DeepFace.analyze(img_path=frame, actions=['age', 'emotion'], enforce_detection=False)
-                                    ages.append(analysis[0]['age'])
-                                    emotions.append(analysis[0]['dominant_emotion'])
-                            
-                            if ages:
-                                # Average the data from the video
-                                st.session_state.detected_age = int(sum(ages) / len(ages))
-                                st.session_state.detected_emotion = max(set(emotions), key=emotions.count).capitalize()
-                                st.success(f"✅ Video Processed. Avg Age: {st.session_state.detected_age} | Dominant State: {st.session_state.detected_emotion}")
-                                st.markdown("<br>", unsafe_allow_html=True)
-                                if st.button("⚡ Execute Deep Fusion Analysis"):
+                            # Ensure the video isn't corrupted
+                            if total_frames > 10:
+                                # Grab 3 frames across the video to average the data
+                                frame_steps = [int(total_frames*0.2), int(total_frames*0.5), int(total_frames*0.8)]
+                                
+                                for step in frame_steps:
+                                    cap.set(cv2.CAP_PROP_POS_FRAMES, step)
+                                    ret, frame = cap.read()
+                                    if ret:
+                                        analysis = DeepFace.analyze(img_path=frame, actions=['age', 'emotion'], enforce_detection=False)
+                                        ages.append(analysis[0]['age'])
+                                        emotions.append(analysis[0]['dominant_emotion'])
+                                
+                                if ages:
+                                    # Save to Session State
+                                    st.session_state.detected_age = int(sum(ages) / len(ages))
+                                    st.session_state.detected_emotion = max(set(emotions), key=emotions.count).capitalize()
                                     st.session_state['analysis_run'] = True
                                     st.session_state['already_loaded'] = False 
-                                    st.rerun()
+                                    
+                                    st.success(f"✅ Pipeline complete! (Avg Age: {st.session_state.detected_age}, State: {st.session_state.detected_emotion})")
+                                    st.info("👉 **Please click on '🧬 Multimodal Fusion Analysis' (Tab 2) above to view your results!**")
+                                else:
+                                    st.error("Failed to extract readable faces from video.")
                             else:
-                                st.error("Failed to extract readable faces from video.")
+                                st.error("Video file is too short or unreadable.")
                         except Exception as e:
                             st.error(f"Analysis failed: {e}")
 
@@ -165,7 +169,8 @@ with tab1:
             cam_image = st.camera_input("Initialize Camera")
             
             if cam_image:
-                if st.button("🔍 Analyze Snapshot"):
+                # Single button controls the whole pipeline
+                if st.button("🔍 Run Full Multimodal Pipeline", key="snap_pipe"):
                     with st.spinner("Extracting facial mesh & emotion biometrics..."):
                         try:
                             img = Image.open(cam_image)
@@ -174,16 +179,14 @@ with tab1:
                             
                             analysis = DeepFace.analyze(img_path=img_bgr, actions=['age', 'emotion'], enforce_detection=False)
                             
+                            # Save to Session State
                             st.session_state.detected_age = analysis[0]['age']
                             st.session_state.detected_emotion = analysis[0]['dominant_emotion'].capitalize()
+                            st.session_state['analysis_run'] = True
+                            st.session_state['already_loaded'] = False 
                             
-                            st.success(f"✅ Snapshot Processed. Age: {st.session_state.detected_age} | State: {st.session_state.detected_emotion}")
-                            st.markdown("<br>", unsafe_allow_html=True)
-                            
-                            if st.button("⚡ Execute Deep Fusion Analysis"):
-                                st.session_state['analysis_run'] = True
-                                st.session_state['already_loaded'] = False 
-                                st.rerun()
+                            st.success(f"✅ Pipeline complete! (Age: {st.session_state.detected_age}, State: {st.session_state.detected_emotion})")
+                            st.info("👉 **Please click on '🧬 Multimodal Fusion Analysis' (Tab 2) above to view your results!**")
                         except Exception as e:
                             st.error(f"Facial scan failed: {e}")
 
