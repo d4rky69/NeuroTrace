@@ -323,13 +323,16 @@ with st.sidebar:
     
     # --- Custom Team Roster Card ---
     st.markdown("""
-        <div style='background: rgba(255, 255, 255, 0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); margin-top: 15px;'>
-    <p style='font-size: 12px; color: #a1a1aa; margin-bottom: 10px; font-style: italic; font-family: "Playfair Display", serif;'>Secure Stream Initialized.</p>
-    <p style='font-size: 16px; color: #fdfbf7; margin-bottom: 12px; font-family: "Playfair Display", serif;'>
-        Project <span style='font-style: italic;'>AXILLA</span>
+        <div style='background: linear-gradient(135deg, rgba(15,23,42,0.8), rgba(2,6,23,0.9)); padding: 20px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); border-top: 1px solid rgba(0, 229, 255, 0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,229,255,0.05); margin-top: 15px; font-family: "Rajdhani", sans-serif;'>
+    <p style='font-size: 11px; color: #00E5FF; margin-bottom: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;'>
+        <span style='display:inline-block; width:8px; height:8px; background:#00E5FF; border-radius:50%; margin-right:6px; box-shadow: 0 0 10px #00E5FF;'></span>Secure Node Active
     </p>
-    <ul style='font-size: 13px; color: #d1d5db; margin: 0; padding-left: 20px; line-height: 1.8; font-family: "Playfair Display", serif;'>
-        <li><b>Shreyas Sahoo</b> <span style='color: #a1a1aa;'>(Admin)</span></li>
+    <p style='font-size: 20px; color: #fff; margin-bottom: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;'>
+        Project <span style='color: #00E5FF; text-shadow: 0 0 15px rgba(0,229,255,0.8);'>AXILLA</span>
+    </p>
+    <div style='height: 1px; background: linear-gradient(90deg, #00E5FF, transparent); margin-bottom: 15px;'></div>
+    <ul style='font-size: 15px; color: #cbd5e1; margin: 0; padding-left: 20px; line-height: 1.8; font-weight: 600;'>
+        <li><b style='color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.5);'>Shreyas Sahoo</b> <span style='color: #00E5FF; font-size: 12px; letter-spacing: 1px;'>(SYS-ADMIN)</span></li>
         <li>Snehal Muduli</li>
         <li>Arnab Bhattacharya</li>
         <li>Dharmanshu Kumar</li>
