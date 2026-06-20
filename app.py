@@ -57,13 +57,16 @@ st.markdown("""
         border-color: rgba(0, 229, 255, 0.7);
     }
 
-    /* Sci-Fi File Uploader Dropzone Fix */
+    /* --- Sci-Fi File Uploader Dropzone Fix --- */
     [data-testid="stFileUploadDropzone"] {
         background: rgba(2, 6, 23, 0.6) !important;
         border: 2px dashed rgba(0, 229, 255, 0.3) !important;
         border-radius: 12px !important;
         padding: 30px 20px !important;
         transition: all 0.3s ease-in-out !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     [data-testid="stFileUploadDropzone"]:hover {
         border-color: #00E5FF !important;
@@ -71,30 +74,29 @@ st.markdown("""
         box-shadow: 0 0 20px rgba(0, 229, 255, 0.2) !important;
     }
     
-    /* Force the invisible wrapper to stack text vertically */
-    [data-testid="stFileUploadDropzone"] div {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 8px !important; 
-    }
-    
+    /* THE NUKE: Force the nested spans to act as full-width blocks */
     [data-testid="stFileUploadDropzone"] span {
+        display: block !important;
+        width: 100% !important;
         color: #00E5FF !important;
         font-size: 1.2rem !important;
         font-weight: 700 !important;
         letter-spacing: 1px !important;
+        text-align: center !important;
+        margin-bottom: 8px !important;
     }
     
-    /* Turn the 'Limit 200MB' text into a cool sci-fi badge */
+    /* The sub-text badge drops cleanly below */
     [data-testid="stFileUploadDropzone"] small {
+        display: inline-block !important;
         color: #94A3B8 !important;
         font-size: 0.85rem !important;
         background: rgba(0, 0, 0, 0.6) !important;
         padding: 4px 12px !important;
         border-radius: 20px !important;
         border: 1px solid rgba(0, 229, 255, 0.2) !important;
+        text-align: center !important;
+        margin: 0 auto !important;
     }
 
     [data-testid="stFileUploadDropzone"] button {
@@ -103,9 +105,12 @@ st.markdown("""
         color: #00E5FF !important;
         border-radius: 6px !important;
         padding: 6px 16px !important;
-        margin-top: 10px !important;
+        margin-top: 15px !important;
         font-weight: 700 !important;
         transition: all 0.3s ease !important;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
     [data-testid="stFileUploadDropzone"] button:hover {
         background: #00E5FF !important;
