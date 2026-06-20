@@ -14,63 +14,88 @@ st.set_page_config(page_title="NeuroTrace | AI Nexus", page_icon="🧠", layout=
 # --- Glassmorphism & Advanced CSS ---
 st.markdown("""
     <style>
+    /* Import Riri's signature elegant font */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+    
+    /* Global Riri Dark Background */
     .stApp { 
-        background: linear-gradient(-45deg, #050B14, #0A192F, #020617, #0F172A);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        color: #E2E8F0; 
+        background-color: #0d0d11; 
+        color: #e5e5e5; 
     }
-    @keyframes gradientBG {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
+    
+    /* Elegant Vogue-style Typography */
+    h1, h2, h3, h4, h5, h6 { 
+        color: #fdfbf7 !important; 
+        font-family: 'Playfair Display', serif !important; 
+        font-weight: 400;
+        letter-spacing: 0.5px;
     }
-    h1, h2, h3, h4, h5, h6 { color: #00D9C0 !important; font-family: 'Inter', sans-serif; letter-spacing: 1px;}
+    
+    /* Replace neon with soft, frosted editorial glass */
     .glass-panel {
-        background: rgba(15, 23, 42, 0.4);
+        background: rgba(255, 255, 255, 0.02);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border-radius: 16px;
-        border: 1px solid rgba(0, 217, 192, 0.2);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
         padding: 24px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         margin-bottom: 20px;
     }
+
+    /* Minimalist, Classy Buttons */
     .stButton>button { 
-        background: rgba(0, 217, 192, 0.1);
-        color: #00D9C0; 
-        font-weight: bold; 
-        border-radius: 12px; 
-        border: 1px solid #00D9C0; 
+        background: transparent;
+        color: #fdfbf7; 
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        border-radius: 4px; 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
         padding: 10px 24px; 
-        transition: all 0.3s ease; 
+        transition: all 0.4s ease; 
         width: 100%;
-        backdrop-filter: blur(5px);
     }
     .stButton>button:hover { 
-        background: #00D9C0; 
-        color: #050B14;
+        background: rgba(255, 255, 255, 0.05); 
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.6);
         transform: translateY(-2px); 
-        box-shadow: 0 0 20px rgba(0, 217, 192, 0.6); 
     }
+
+    /* Soften the terminal to match the elegant vibe */
     .terminal-box { 
         font-family: 'Courier New', monospace; 
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(10px);
+        background: rgba(0, 0, 0, 0.4);
         padding: 20px; 
-        border-radius: 12px; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        color: #10B981; 
+        border-radius: 8px; 
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+        color: #a1a1aa; /* Muted gray instead of neon green */
         margin-bottom: 20px;
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
     }
+
+    /* Clean Metric Cards */
     div[data-testid="metric-container"] {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.05);
         padding: 20px;
-        border-radius: 16px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    div[data-testid="metric-container"]:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Force metrics to use the serif font */
+    div[data-testid="metric-container"] label {
+        font-family: 'Playfair Display', serif !important;
+        font-style: italic;
+        color: #a1a1aa !important;
+    }
+    div[data-testid="metric-container"] div {
+        color: #fdfbf7 !important;
+        font-family: 'Playfair Display', serif !important;
     }
     </style>
 """, unsafe_allow_html=True)
