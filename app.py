@@ -22,10 +22,10 @@ st.markdown("""
         background: radial-gradient(circle at 50% -10%, #0b1a2e 0%, #020617 50%, #000000 100%);
         background-attachment: fixed;
         color: #E2E8F0; 
-        font-family: 'Rajdhani', sans-serif;
     }
     
-    h1, h2, h3, h4, h5, h6, p, span { 
+    /* Apply font globally WITHOUT breaking Streamlit internal flex layouts */
+    html, body, [class*="st-"] {
         font-family: 'Rajdhani', sans-serif !important;
     }
 
@@ -57,39 +57,81 @@ st.markdown("""
         border-color: rgba(0, 229, 255, 0.7);
     }
 
+    /* Sci-Fi File Uploader Dropzone Fix */
+    [data-testid="stFileUploadDropzone"] {
+        background: rgba(2, 6, 23, 0.6) !important;
+        border: 2px dashed rgba(0, 229, 255, 0.3) !important;
+        border-radius: 12px !important;
+        padding: 30px 20px !important;
+        transition: all 0.3s ease-in-out !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    [data-testid="stFileUploadDropzone"]:hover {
+        border-color: #00E5FF !important;
+        background: rgba(0, 229, 255, 0.05) !important;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.2) !important;
+    }
+    [data-testid="stFileUploadDropzone"] section {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    [data-testid="stFileUploadDropzone"] span {
+        color: #00E5FF !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        display: block !important;
+        text-align: center !important;
+    }
+    [data-testid="stFileUploadDropzone"] small {
+        color: #94A3B8 !important;
+        font-size: 0.9rem !important;
+        display: block !important;
+        text-align: center !important;
+        margin-top: 5px !important;
+    }
+    [data-testid="stFileUploadDropzone"] button {
+        background: rgba(0, 229, 255, 0.1) !important;
+        border: 1px solid #00E5FF !important;
+        color: #00E5FF !important;
+        border-radius: 6px !important;
+        padding: 6px 16px !important;
+        margin-top: 15px !important;
+        font-weight: 700 !important;
+        transition: all 0.3s ease !important;
+    }
+    [data-testid="stFileUploadDropzone"] button:hover {
+        background: #00E5FF !important;
+        color: #020617 !important;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.5) !important;
+    }
+
     /* Highly Interactive Cyber-Buttons */
     .stButton>button { 
-        background: linear-gradient(45deg, rgba(0, 229, 255, 0.05), rgba(138, 43, 226, 0.05));
-        color: #00E5FF; 
-        font-weight: 700; 
-        font-size: 1.1rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        border-radius: 8px; 
-        border: 1px solid rgba(0, 229, 255, 0.5); 
-        padding: 12px 24px; 
-        transition: all 0.3s ease-in-out; 
-        width: 100%;
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
-    }
-    .stButton>button::before {
-        content: '';
-        position: absolute;
-        top: 0; left: -100%; width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.4), transparent);
-        transition: left 0.5s ease-in-out;
-    }
-    .stButton>button:hover::before {
-        left: 100%;
+        background: linear-gradient(45deg, rgba(0, 229, 255, 0.05), rgba(138, 43, 226, 0.05)) !important;
+        color: #00E5FF !important; 
+        font-weight: 700 !important; 
+        font-size: 1.1rem !important;
+        letter-spacing: 2px !important;
+        text-transform: uppercase !important;
+        border-radius: 8px !important; 
+        border: 1px solid rgba(0, 229, 255, 0.5) !important; 
+        padding: 12px 24px !important; 
+        transition: all 0.3s ease-in-out !important; 
+        width: 100% !important;
+        backdrop-filter: blur(10px) !important;
     }
     .stButton>button:hover { 
-        background: linear-gradient(45deg, #00E5FF, #0088ff); 
-        color: #020617;
-        border-color: transparent;
-        transform: scale(1.02); 
-        box-shadow: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0, 229, 255, 0.4); 
+        background: linear-gradient(45deg, #00E5FF, #0088ff) !important; 
+        color: #020617 !important;
+        border-color: transparent !important;
+        transform: scale(1.02) !important; 
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0, 229, 255, 0.4) !important; 
     }
 
     /* System Terminal Style */
