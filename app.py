@@ -14,88 +14,128 @@ st.set_page_config(page_title="NeuroTrace | AI Nexus", page_icon="🧠", layout=
 # --- Glassmorphism & Advanced CSS ---
 st.markdown("""
     <style>
-    /* Import Riri's signature elegant font */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-    
-    /* Global Riri Dark Background */
+    /* Sleek Sci-Fi Font */
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+    /* Advanced Deep Space Radial Background */
     .stApp { 
-        background-color: #0d0d11; 
-        color: #e5e5e5; 
+        background: radial-gradient(circle at 50% -10%, #0b1a2e 0%, #020617 50%, #000000 100%);
+        background-attachment: fixed;
+        color: #E2E8F0; 
+        font-family: 'Rajdhani', sans-serif;
     }
     
-    /* Elegant Vogue-style Typography */
-    h1, h2, h3, h4, h5, h6 { 
-        color: #fdfbf7 !important; 
-        font-family: 'Playfair Display', serif !important; 
-        font-weight: 400;
-        letter-spacing: 0.5px;
-    }
-    
-    /* Replace neon with soft, frosted editorial glass */
-    .glass-panel {
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 24px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        margin-bottom: 20px;
+    h1, h2, h3, h4, h5, h6, p, span { 
+        font-family: 'Rajdhani', sans-serif !important;
     }
 
-    /* Minimalist, Classy Buttons */
+    /* Glowing Holographic Headers */
+    h1, h2, h3 {
+        color: #00E5FF !important; 
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.4), 0 0 20px rgba(0, 229, 255, 0.2);
+    }
+
+    /* Ultra-Frosted Sci-Fi Glass Panels */
+    .glass-panel {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(2, 6, 23, 0.8) 100%);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-radius: 16px;
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        border-top: 1px solid rgba(0, 229, 255, 0.5);
+        border-left: 1px solid rgba(0, 229, 255, 0.5);
+        padding: 24px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 229, 255, 0.05);
+        margin-bottom: 20px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .glass-panel:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px 0 rgba(0, 229, 255, 0.3), inset 0 0 30px rgba(0, 229, 255, 0.15);
+        border-color: rgba(0, 229, 255, 0.7);
+    }
+
+    /* Highly Interactive Cyber-Buttons */
     .stButton>button { 
-        background: transparent;
-        color: #fdfbf7; 
-        font-family: 'Playfair Display', serif;
-        font-style: italic;
+        background: linear-gradient(45deg, rgba(0, 229, 255, 0.05), rgba(138, 43, 226, 0.05));
+        color: #00E5FF; 
+        font-weight: 700; 
         font-size: 1.1rem;
-        letter-spacing: 1px;
-        border-radius: 4px; 
-        border: 1px solid rgba(255, 255, 255, 0.2); 
-        padding: 10px 24px; 
-        transition: all 0.4s ease; 
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border-radius: 8px; 
+        border: 1px solid rgba(0, 229, 255, 0.5); 
+        padding: 12px 24px; 
+        transition: all 0.3s ease-in-out; 
         width: 100%;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+    .stButton>button::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.4), transparent);
+        transition: left 0.5s ease-in-out;
+    }
+    .stButton>button:hover::before {
+        left: 100%;
     }
     .stButton>button:hover { 
-        background: rgba(255, 255, 255, 0.05); 
-        color: #ffffff;
-        border-color: rgba(255, 255, 255, 0.6);
-        transform: translateY(-2px); 
+        background: linear-gradient(45deg, #00E5FF, #0088ff); 
+        color: #020617;
+        border-color: transparent;
+        transform: scale(1.02); 
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0, 229, 255, 0.4); 
     }
 
-    /* Soften the terminal to match the elegant vibe */
+    /* System Terminal Style */
     .terminal-box { 
         font-family: 'Courier New', monospace; 
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
         padding: 20px; 
         border-radius: 8px; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        color: #a1a1aa; /* Muted gray instead of neon green */
+        border: 1px solid rgba(0, 229, 255, 0.3); 
+        border-left: 4px solid #00E5FF;
+        color: #00E5FF; 
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
         margin-bottom: 20px;
+        box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1);
     }
 
-    /* Clean Metric Cards */
+    /* 3D Floating Metric Cards */
     div[data-testid="metric-container"] {
-        background: rgba(255, 255, 255, 0.02);
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
         padding: 20px;
-        border-radius: 8px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         transition: all 0.3s ease;
+        border-left: 3px solid #8A2BE2; /* Deep purple accent */
     }
     div[data-testid="metric-container"]:hover {
-        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-4px) scale(1.02);
+        border-color: rgba(138, 43, 226, 0.5);
+        box-shadow: 0 10px 40px rgba(138, 43, 226, 0.3);
     }
-    
-    /* Force metrics to use the serif font */
     div[data-testid="metric-container"] label {
-        font-family: 'Playfair Display', serif !important;
-        font-style: italic;
-        color: #a1a1aa !important;
+        color: #94A3B8 !important;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-family: 'Rajdhani', sans-serif !important;
     }
     div[data-testid="metric-container"] div {
-        color: #fdfbf7 !important;
-        font-family: 'Playfair Display', serif !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 15px rgba(255,255,255,0.4);
+        font-family: 'Rajdhani', sans-serif !important;
+        font-weight: 700;
     }
     </style>
 """, unsafe_allow_html=True)
