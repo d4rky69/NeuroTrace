@@ -283,16 +283,16 @@ with st.sidebar:
     
     # --- Custom Team Roster Card ---
     st.markdown("""
-        <div style='background: rgba(15, 23, 42, 0.4); padding: 15px; border-radius: 10px; border: 1px solid rgba(0, 217, 192, 0.2); margin-top: 15px;'>
-            <p style='font-size: 12px; color: #94A3B8; margin-bottom: 5px;'>Secure Stream Initialized.</p>
-            <p style='font-size: 14px; color: #E2E8F0; margin-bottom: 8px;'>
-                <b>Team <span style='color: #00D9C0; text-shadow: 0 0 8px rgba(0,217,192,0.6); letter-spacing: 1px;'>AXILLA</span></b>
-            </p>
-            <ul style='font-size: 12px; color: #94A3B8; margin: 0; padding-left: 20px; line-height: 1.6;'>
-                <li><b>Shreyas Sahoo</b> (Admin)</li>
-                <li>Snehal Muduli</li>
-                <li>Arnab Bhattacharya</li>
-                <li>Dharmanshu Kumar</li>
-            </ul>
-        </div>
+        <div style='background: rgba(255, 255, 255, 0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); margin-top: 15px;'>
+    <p style='font-size: 12px; color: #a1a1aa; margin-bottom: 10px; font-style: italic; font-family: "Playfair Display", serif;'>Secure Stream Initialized.</p>
+    <p style='font-size: 16px; color: #fdfbf7; margin-bottom: 12px; font-family: "Playfair Display", serif;'>
+        Project <span style='font-style: italic;'>AXILLA</span>
+    </p>
+    <ul style='font-size: 13px; color: #d1d5db; margin: 0; padding-left: 20px; line-height: 1.8; font-family: "Playfair Display", serif;'>
+        <li><b>Shreyas Sahoo</b> <span style='color: #a1a1aa;'>(Admin)</span></li>
+        <li>Snehal Muduli</li>
+        <li>Arnab Bhattacharya</li>
+        <li>Dharmanshu Kumar</li>
+    </ul>
+</div>
     """, unsafe_allow_html=True)
