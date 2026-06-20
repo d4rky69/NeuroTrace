@@ -241,7 +241,7 @@ with tab2:
     else:
         st.info("Awaiting multimodal payload. Please process a video or snapshot in Step 1.")
 
-# --- Sidebar (Moved to the bottom for perfect state synchronization) ---
+# --- Sidebar ---
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #00D9C0; text-shadow: 0 0 10px rgba(0,217,192,0.5);'>🧠 NeuroTrace</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-size: 14px; color: #94A3B8;'>AI Nexus Hackathon 2026</p>", unsafe_allow_html=True)
@@ -255,4 +255,19 @@ with st.sidebar:
     
     st.divider()
     st.success("🟢 Edge-Compute Node Active")
-    st.caption("Secure Stream initialized. Admin: Shreyas Sahoo")
+    
+    # --- Custom Team Roster Card ---
+    st.markdown("""
+        <div style='background: rgba(15, 23, 42, 0.4); padding: 15px; border-radius: 10px; border: 1px solid rgba(0, 217, 192, 0.2); margin-top: 15px;'>
+            <p style='font-size: 12px; color: #94A3B8; margin-bottom: 5px;'>Secure Stream Initialized.</p>
+            <p style='font-size: 14px; color: #E2E8F0; margin-bottom: 8px;'>
+                <b>Team <span style='color: #00D9C0; text-shadow: 0 0 8px rgba(0,217,192,0.6); letter-spacing: 1px;'>AXILLA</span></b>
+            </p>
+            <ul style='font-size: 12px; color: #94A3B8; margin: 0; padding-left: 20px; line-height: 1.6;'>
+                <li><b>Shreyas Sahoo</b> (Admin)</li>
+                <li>Snehal Muduli</li>
+                <li>Arnab Bhattacharya</li>
+                <li>Dharmanshu Kumar</li>
+            </ul>
+        </div>
+    """, unsafe_allow_html=True)
